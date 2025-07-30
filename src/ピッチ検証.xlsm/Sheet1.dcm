@@ -1,0 +1,77 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "Sheet1"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = True
+Option Explicit
+
+Const PI As Double = 3.14159265358979
+
+Dim renbunB(20) As Long  'òAï™êîåWêî
+
+Public Sub CommandButton1_Click()
+Dim row As Long
+Dim nn As Integer
+Dim i As Integer
+Dim ss$, F&, G&, ee#, dy#
+Dim dange As Boolean
+
+    With Range("A1:BZ400").Interior
+        .ColorIndex = 0
+    End With
+
+    For row = 0 To Sheet1.Cells(2, 3) - 1
+        nn = ContFrac(CDbl(Sheet1.Cells(6 + row, 3)), 17, renbunB)
+        dange = False
+        ss$ = "["
+        For i = 0 To nn - 1
+            ss$ = ss$ & Format(renbunB(i), "0")
+            If i < (nn - 1) Then ss$ = ss$ & ","
+            If renbunB(i) >= 100 Then
+                dange = True
+            End If
+        Next
+        ss$ = ss$ & "]"
+        Sheet1.Cells(6 + row, 5) = ss$
+        Sheet1.Cells(6 + row, 6) = nn
+        'FracConv 17, renbunB, F, G
+        'Sheet1.Cells(6 + row, 7) = Format(F) & " / " & Format(G)
+'        If dange Then
+'            With Range("A" & Format(6 + row) & ":G" & Format(6 + row)).Interior
+'                .ColorIndex = 6
+'            End With
+'        Else
+'            With Range("A" & Format(6 + row) & ":G" & Format(6 + row)).Interior
+'                .ColorIndex = 0
+'            End With
+'        End If
+        For i = 1 To nn - 1
+            FracConv i, renbunB, F, G
+            With Sheet1
+                .Cells(6 + row, 7 + (i - 1) * 4) = F
+                .Cells(6 + row, 8 + (i - 1) * 4) = G
+                ee = .Cells(6 + row, 3) * G - F
+                .Cells(6 + row, 9 + (i - 1) * 4) = ee
+                dy = .Cells(6 + row, 2) * PI * .Cells(6 + row, 9 + (i - 1) * 4)
+                .Cells(6 + row, 10 + (i - 1) * 4) = dy
+                If Abs(dy) < .Cells(1, 10) And G < CInt((CDbl(.Cells(2, 10)) * CDbl(.Cells(6 + row, 2))) / .Cells(6, 2)) Then
+'                If Abs(dy) < .Cells(1, 10) And G < .Cells(2, 10) Then
+                    With Range("A" & Format(6 + row) & ":BX" & Format(6 + row)).Interior
+                        .ColorIndex = 0
+                    End With
+                    With Range("A" & Format(6 + row) & ":F" & Format(6 + row)).Interior
+                        .ColorIndex = 6
+                    End With
+                    With Range(Cells(6 + row, 7 + (i - 1) * 4), Cells(6 + row, 10 + (i - 1) * 4)).Interior
+                        .ColorIndex = 6
+                    End With
+                End If
+            End With
+        Next
+    Next
+
+End Sub

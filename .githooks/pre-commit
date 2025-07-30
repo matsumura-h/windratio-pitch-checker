@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Disable commits to master and develop branches
+if test "`git symbolic-ref HEAD | sed -e 's:^refs/heads/::'`" = master; then
+	echo "can't commit to master."
+	exit 1
+fi
+
+if test "`git symbolic-ref HEAD | sed -e 's:^refs/heads/::'`" = develop; then
+	echo "can't commit to develop."
+	exit 1
+fi
