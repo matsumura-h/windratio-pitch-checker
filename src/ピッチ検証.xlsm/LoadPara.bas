@@ -232,7 +232,6 @@ Private Function WDTFileRead(ByVal filePath As String, ByRef values As Collectio
         Exit Function
     End If
     
-    num = 0
     fileNum = FreeFile
     
     Open filePath For Input As #fileNum

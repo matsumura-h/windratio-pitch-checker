@@ -75,3 +75,12 @@ Dim dange As Boolean
     Next
 
 End Sub
+
+' ƒÂ‚¨‚æ‚ÑJ”»’è’l‚ª•Ï‰»‚µ‚½‚Æ‚«‚ÉÄ•ÏŠ·‚·‚é
+Private Sub Worksheet_Change(ByVal Target As Range)
+    If Not Intersect(Target, Me.Range("J1")) Is Nothing _
+        Or Not Intersect(Target, Me.Range("J2")) Is Nothing Then
+        CommandButton1_Click
+    End If
+End Sub
+
